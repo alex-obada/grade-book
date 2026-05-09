@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Siemens.Internship2026.GradeBook.Interfaces;
+using Siemens.Internship2026.GradeBook.Models;
 
 namespace Siemens.Internship2026.GradeBook.Controllers;
 
@@ -8,10 +9,12 @@ namespace Siemens.Internship2026.GradeBook.Controllers;
 public class ItemController : ControllerBase
 {
     private readonly IItemReader _reader;
+    private readonly IItemStats _statsService;
 
-    public ItemController(IItemReader reader)
+    public ItemController(IItemReader reader, IItemStats statsService)
     {
         _reader = reader;
+        _statsService = statsService;
     }
 
     [HttpGet]
@@ -20,22 +23,15 @@ public class ItemController : ControllerBase
         Console.WriteLine($"[LOG] {DateTime.UtcNow}: GET api/item called");
 
         var items = await _reader.GetAllAsync();
-        var itemList = items.ToList();
 
-        var totalCount = itemList.Count;
-        var averageValue = itemList.Any() ? itemList.Average(i => i.Value) : 0;
+        ItemStats stats = _statsService.GetStats(items); 
 
-        Console.WriteLine($"[LOG] Returning {totalCount} items, average value: {averageValue}");
+        Console.WriteLine($"[LOG] Returning {stats.TotalCount} items, average value: {stats.AverageValue}");
 
         return Ok(new
         {
-            Data = itemList,
-            Statistics = new
-            {
-                TotalCount = totalCount,
-                AverageValue = averageValue,
-                RetrievedAt = DateTime.UtcNow
-            }
+            Data = items,
+            Statistics = stats
         });
     }
 

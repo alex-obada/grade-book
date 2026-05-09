@@ -1,11 +1,13 @@
 using Siemens.Internship2026.GradeBook.Interfaces;
 using Siemens.Internship2026.GradeBook.Repositories;
+using Siemens.Internship2026.GradeBook.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IItemReader, ItemRepository>();
+builder.Services.AddSingleton<IItemStats, ItemStatsService>();
 
 var app = builder.Build();
 
