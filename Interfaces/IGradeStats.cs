@@ -1,4 +1,5 @@
-﻿using Siemens.Internship2026.GradeBook.Models;
+﻿using Siemens.Internship2026.GradeBook.Dto;
+using Siemens.Internship2026.GradeBook.Models;
 
 namespace Siemens.Internship2026.GradeBook.Interfaces;
 

@@ -1,4 +1,4 @@
-﻿namespace Siemens.Internship2026.GradeBook.Models;
+﻿namespace Siemens.Internship2026.GradeBook.Dto;
 
 public class GradeStats
 {

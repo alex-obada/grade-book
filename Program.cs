@@ -8,6 +8,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IGradeReader, GradeRepository>();
 builder.Services.AddSingleton<IGradeStats, GradeStatsService>();
+builder.Services.AddSingleton<IGradeService, GradeService>();
 
 var app = builder.Build();
 
