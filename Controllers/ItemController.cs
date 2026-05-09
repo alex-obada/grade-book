@@ -10,24 +10,24 @@ public class ItemController : ControllerBase
 {
     private readonly IItemReader _reader;
     private readonly IItemStats _statsService;
+    private readonly ILogger<ItemController> _logger;
 
-    public ItemController(IItemReader reader, IItemStats statsService)
+    public ItemController(IItemReader reader, IItemStats statsService, ILogger<ItemController> logger)
     {
         _reader = reader;
         _statsService = statsService;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        Console.WriteLine($"[LOG] {DateTime.UtcNow}: GET api/item called");
+        _logger.LogInformation($"[LOG] {DateTime.UtcNow}: GET api/item called");
 
         var items = await _reader.GetAllAsync();
-
         ItemStats stats = _statsService.GetStats(items); 
 
-        Console.WriteLine($"[LOG] Returning {stats.TotalCount} items, average value: {stats.AverageValue}");
-
+        _logger.LogInformation($"[LOG] Returning {stats.TotalCount} items, average value: {stats.AverageValue}");
         return Ok(new
         {
             Data = items,
@@ -38,18 +38,18 @@ public class ItemController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        Console.WriteLine($"[LOG] {DateTime.UtcNow}: GET api/item/{id} called");
+        _logger.LogInformation($"[LOG] {DateTime.UtcNow}: GET api/item/{id} called");
 
         if (id <= 0)
         {
-            Console.WriteLine($"[LOG] Invalid id: {id}");
+            _logger.LogWarning($"[LOG] Invalid id: {id}");
             return BadRequest("Id must be a positive integer.");
         }
 
         var item = await _reader.GetByIdAsync(id);
         if (item == null)
         {
-            Console.WriteLine($"[LOG] Item {id} not found");
+            _logger.LogWarning($"[LOG] Item {id} not found");
             return NotFound($"Item with Id {id} was not found.");
         }
 
