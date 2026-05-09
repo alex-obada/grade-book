@@ -1,6 +1,6 @@
 ﻿namespace Siemens.Internship2026.GradeBook.Models;
 
-public class ItemStats
+public class GradeStats
 {
     public int TotalCount { get; set; }
     public decimal AverageValue { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Siemens.Internship2026.GradeBook.Interfaces;
 
-public interface IItemStats
+public interface IGradeStats
 {
-    ItemStats GetStats(IEnumerable<Item> items);
+    GradeStats GetStats(IEnumerable<Grade> grades);
 }

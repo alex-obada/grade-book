@@ -6,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<IItemReader, ItemRepository>();
-builder.Services.AddSingleton<IItemStats, ItemStatsService>();
+builder.Services.AddSingleton<IGradeReader, GradeRepository>();
+builder.Services.AddSingleton<IGradeStats, GradeStatsService>();
 
 var app = builder.Build();
 

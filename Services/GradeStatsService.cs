@@ -3,15 +3,15 @@ using Siemens.Internship2026.GradeBook.Models;
 
 namespace Siemens.Internship2026.GradeBook.Services;
 
-public class ItemStatsService : IItemStats
+public class GradeStatsService : IGradeStats
 {
-    public ItemStats GetStats(IEnumerable<Item> items)
+    public GradeStats GetStats(IEnumerable<Grade> grades)
     {
-        var itemList = items.ToList();
-        var totalCount = itemList.Count;
-        var averageValue = itemList.Any() ? itemList.Average(i => i.Value) : 0;
+        var gradesList = grades.ToList();
+        var totalCount = gradesList.Count;
+        var averageValue = gradesList.Any() ? gradesList.Average(i => i.Value) : 0;
 
-        return new ItemStats
+        return new GradeStats
         {
             TotalCount = totalCount,
             AverageValue = averageValue,
