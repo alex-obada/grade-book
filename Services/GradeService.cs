@@ -1,5 +1,4 @@
-﻿using Siemens.Internship2026.GradeBook.Dto;
-using Siemens.Internship2026.GradeBook.Dtos;
+﻿using Siemens.Internship2026.GradeBook.Dtos;
 using Siemens.Internship2026.GradeBook.Interfaces;
 
 namespace Siemens.Internship2026.GradeBook.Services;
@@ -55,5 +54,25 @@ public class GradeService : IGradeService
             Id = grade.Id,
             Value = grade.Value
         };
+    }
+
+    public async Task<IEnumerable<GradeResponse>> GetFirstNPassingGrades(int number)
+    {
+        if(number <= 0)
+        {
+            _logger.LogWarning("[LOG] Number of grades is less than 1");
+            return [];
+        }
+        
+        var grades = await _reader.GetAllAsync();
+        return grades
+            .Where(g => g.Value >= 5)
+            .Take(number)
+            .Select(g => new GradeResponse
+            {
+                Id = g.Id,
+                Value = g.Value
+            })
+            .ToList();
     }
 }

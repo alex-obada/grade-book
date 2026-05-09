@@ -1,5 +1,4 @@
-﻿using Siemens.Internship2026.GradeBook.Dto;
-namespace Siemens.Internship2026.GradeBook.Dtos;
+﻿namespace Siemens.Internship2026.GradeBook.Dtos;
 
 public class GradeListResponse
 {
