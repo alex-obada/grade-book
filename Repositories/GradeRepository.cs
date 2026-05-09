@@ -9,8 +9,8 @@ public sealed class GradeRepository : IGradeReader
 
     public Task<Grade?> GetByIdAsync(int id)
     {
-        var grades = _grades.FirstOrDefault(i => i.Id == id && i.IsActive);
-        return Task.FromResult(grades);
+        var grade = _grades.FirstOrDefault(i => i.Id == id && i.IsActive);
+        return Task.FromResult(grade);
     }
 
     public Task<IEnumerable<Grade>> GetAllAsync()
