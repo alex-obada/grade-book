@@ -6,9 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<IGradeReader, GradeRepository>();
-builder.Services.AddSingleton<IGradeStats, GradeStatsService>();
-builder.Services.AddSingleton<IGradeService, GradeService>();
+builder.Services.AddHttpClient<IGradeReader, GradeRepository>(client =>
+{
+    client.BaseAddress = new Uri("https://gist.githubusercontent.com/ArdeleanTudor/8ea407832cd9794960e0e6bbd1319f6e/raw/");
+});
+
+builder.Services.AddScoped<IGradeStats, GradeStatsService>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 
 var app = builder.Build();
 

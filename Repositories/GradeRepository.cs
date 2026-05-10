@@ -1,3 +1,4 @@
+using Siemens.Internship2026.GradeBook.Dtos;
 using Siemens.Internship2026.GradeBook.Interfaces;
 using Siemens.Internship2026.GradeBook.Models;
 
@@ -5,17 +6,33 @@ namespace Siemens.Internship2026.GradeBook.Repositories;
 
 public sealed class GradeRepository : IGradeReader
 {
-    private readonly List<Grade> _grades = new();
+    private readonly HttpClient _httpClient;
+    private readonly ILogger<GradeRepository> _logger;
 
-    public Task<Grade?> GetByIdAsync(int id)
+    public GradeRepository(HttpClient httpClient, ILogger<GradeRepository> logger)
     {
-        var grade = _grades.FirstOrDefault(i => i.Id == id && i.IsActive);
-        return Task.FromResult(grade);
+        _httpClient = httpClient;
+        _logger = logger;
     }
 
-    public Task<IEnumerable<Grade>> GetAllAsync()
+    public async Task<Grade?> GetByIdAsync(int id)
     {
-        var grades = _grades.Where(i => i.IsActive).AsEnumerable();
-        return Task.FromResult(grades);
+        var grades = await GetAllAsync();
+        return grades.FirstOrDefault(g => g.Id == id);
+    }
+
+    public async Task<IEnumerable<Grade>> GetAllAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetFromJsonAsync<GradeAPIResult>("");
+            var grades = response?.Items ?? [];
+            return grades.Where(g => g.IsActive);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "[LOG] Failed to fetch data from external API");
+            return [];
+        }
     }
 }
